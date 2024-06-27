@@ -1,0 +1,79 @@
+// define collection parameters
+var startYear = 1992;
+var endYear = 2021;
+var startDay = '12-10';
+var endDay = '03-30';
+var aoi = ee.Geometry.Point(149.983, -32.9822);
+var index = 'NDVI';
+var maskThese = ['cloud', 'shadow', 'snow', 'water'];
+
+// define landtrendr parameters
+var runParams = { 
+  maxSegments:            8,
+  spikeThreshold:         0.9,
+  vertexCountOvershoot:   3,
+  preventOneYearRecovery: true,
+  recoveryThreshold:      0.25,
+  pvalThreshold:          0.05,
+  bestModelProportion:    0.75,
+  minObservationsNeeded:  6
+};
+
+// define change parameters
+var changeParams = {
+  delta:  'loss',
+  sort:   'greatest',
+  year:   {checked:false, start:1984, end:2021},
+  mag:    {checked:true, value:200,  operator:'>'},
+  dur:    {checked:true, value:4,    operator:'<'},
+  preval: {checked:true, value:300,  operator:'>'},
+  mmu:    {checked:true, value:11},
+};
+
+//##########################################################################################
+// END INPUTS
+//##########################################################################################
+
+// load the LandTrendr.js module
+var ltgee = require('users/emaprlab/public:Modules/LandTrendr.js'); 
+
+// add index to changeParams object
+changeParams.index = index;
+
+// run landtrendr
+var lt = ltgee.runLT(startYear, endYear, startDay, endDay, aoi, index, [], runParams, maskThese);
+
+// get the change map layers
+var changeImg = ltgee.getChangeMap(lt, changeParams);
+
+// set visualization dictionaries
+var palette = ['#9400D3', '#4B0082', '#0000FF', '#00FF00', '#FFFF00', '#FF7F00', '#FF0000'];
+var yodVizParms = {
+  min: startYear,
+  max: endYear,
+  palette: palette
+};
+
+var magVizParms = {
+  min: 200,
+  max: 800,
+  palette: palette
+};
+
+// display the change attribute map - note that there are other layers - print changeImg to console to see all
+Map.centerObject(aoi, 11);
+Map.addLayer(changeImg.select(['mag']), magVizParms, 'Magnitude of Change');
+Map.addLayer(changeImg.select(['yod']), yodVizParms, 'Year of Detection');
+
+var region = aoi.buffer(50000).bounds();
+var exportImg = changeImg.clip(region).unmask(0).short();
+Export.image.toDrive({
+  image: exportImg, 
+  description: 'lt-gee_disturbance_map', 
+  folder: 'lt-gee_disturbance_map', 
+  fileNamePrefix: 'lt-gee_disturbance_map', 
+  region: region, 
+  scale: 30, 
+  crs: 'EPSG:5070', 
+  maxPixels: 1e13
+});
