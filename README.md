@@ -14,5 +14,5 @@ Results:
 
 By comparing the magnitude and time of changes, we can assess the severity and extent of the 2020 forest fires in Australia as compared to previous fire in the area.
 
-![year of change](year of change map)
+![year of change](year-of-change-map)
 
