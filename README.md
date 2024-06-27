@@ -14,5 +14,4 @@ Results:
 
 By comparing the magnitude and time of changes, we can assess the severity and extent of the 2020 forest fires in Australia as compared to previous fire in the area.
 
-![year of change](year of change map)
-
+**Note**: the images are too large to displayed on Github. The code and images can be found here although they might take some time to run due to the complexity and size of the code. https://code.earthengine.google.com/83d297e3ff815ffb60df5813f58f2115
