@@ -9,6 +9,10 @@ Magnitude of Change Map: Shows the extent of changes, with blue indicating the s
 Time of Change Map: Displays the timing of changes, with blue indicating older changes and red indicating more recent changes.
 
 Results:
-The Magnitude of Change Map highlights areas with varying degrees of vegetation health decline.
-The Time of Change Map identifies when these changes occurred.
-By comparing the magnitude and time of changes, we can assess the severity and extent of the 2020 forest fires in Australia.
+**The Magnitude of Change Map** highlights areas with varying degrees of vegetation health decline.
+**The Year of Change Map** identifies when these changes occurred.
+
+By comparing the magnitude and time of changes, we can assess the severity and extent of the 2020 forest fires in Australia as compared to previous fire in the area.
+
+![year of change](year of change map)
+
